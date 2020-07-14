@@ -129,7 +129,7 @@ describe('/api/snapshots/:snapshot_id', () => {
           expect(msg).toBe('bad request');
         });
     });
-    test('405: invalid method', () => {
+    test('status: 405 - invalid method', () => {
       const invalidMethods = ['get', 'post', 'patch', 'put'];
       const methodPromises = invalidMethods.map((method) => {
         return request(app)

@@ -24,8 +24,8 @@ describe('formatDates', () => {
     ];
     const actual = formatDates(inputList);
 
-    expect(actual.length).toBe(1);
-    expect(typeof actual[0]).toBe('object');
+    expect(actual.length).toEqual(1);
+    expect(typeof actual[0]).toEqual('object');
   });
 
   test('returned objects have created_by value converted into Date object - one object in array', () => {
