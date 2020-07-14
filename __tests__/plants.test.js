@@ -28,9 +28,8 @@ describe('/api/users/:user_id/plants', () => {
         .get('/api/users/1/plants')
         .expect(200)
         .then(({ body: { plants } }) => {
-          console.log(plants);
           expect(Array.isArray(plants)).toBe(true);
-          expect(plants.length).toBe(2);
+          expect(plants.length).toBe(8);
         });
     });
 
@@ -98,26 +97,25 @@ describe('/api/users/:user_id/plants', () => {
         });
     });
 
-    test('status:200 - each plant object has a snapshot_count key, value set to total count of comments with plant_id', () => {
+    test('status:200 - each plant object has a snapshot_count key, value set to total count of snapshots with that plant_id', () => {
       return request(app)
         .get('/api/users/1/plants')
         .expect(200)
         .then(({ body: { plants } }) => {
           plants.forEach((plant) => {
-            expect(plant.snapshot_count).toEqual(expect.any(String));
+            expect(plant).toHaveProperty('snapshot_count');
+            if (plant.plant_id === 8) expect(plant.snapshot_count).toBe('1');
           });
-          expect(plants[0].snapshot_count).toBe('6');
         });
     });
 
     test('status:200 - plants can be filtered by plant_type', () => {
       return request(app)
-        .get('/api/users/1/plants?plant_type=vegetable')
+        .get('/api/users/1/plants?plant_type=herb')
         .expect(200)
         .then(({ body: { plants } }) => {
-          plants.forEach((plant) => {
-            expect(plant.plant_type).toBe('vegetable');
-          });
+          expect(plants.length).toBe(1);
+          expect(plants[0].plant_type).toBe('herb');
         });
     });
 
@@ -173,26 +171,26 @@ describe('/api/users/:user_id/plants', () => {
         .post('/api/users/1/plants')
         .send({
           plant_name: 'plant-name-test',
-          plant_type: 'vegetable',
+          plant_type: 'fruit',
           soil: 'soil-test',
           sunlight: 'indirect',
           location: 'inside',
           watering_freq: 'twice a day',
-          plant_variety: 'tomato',
+          plant_variety: 'avocado',
           pot_height: 10.5,
         })
         .expect(201)
         .then(({ body: { plant } }) => {
-          expect(plant.plant_id).toBe(7);
+          expect(plant.plant_id).toBe(11);
           expect(plant.plant_name).toBe('plant-name-test');
-          expect(plant.plant_type).toBe('vegetable');
-          expect(plant.plant_variety).toBe('tomato');
+          expect(plant.plant_type).toBe('fruit');
+          expect(plant.plant_variety).toBe('avocado');
           expect(plant.pot_height).toBe('10.5');
           expect(plant.soil).toBe('soil-test');
           expect(plant.sunlight).toBe('indirect');
           expect(plant.location).toBe('inside');
           expect(plant.watering_freq).toBe('twice a day');
-          expect(plant.created_at).not.toBe('Invalid Date');
+          expect(plant).toHaveProperty('created_at');
         });
     });
 
@@ -271,7 +269,7 @@ describe('/api/plants/:plant_id', () => {
         .patch('/api/plants/1')
         .send({
           plant_name: 'plant-name-test-change',
-          plant_type: 'vegetable',
+          plant_type: 'garden',
           soil: 'soil-test-change',
           sunlight: 'direct',
           location: 'outside',
@@ -285,7 +283,7 @@ describe('/api/plants/:plant_id', () => {
             ['plant_id', 1],
             ['user_id', 1],
             ['plant_name', 'plant-name-test-change'],
-            ['plant_type', 'vegetable'],
+            ['plant_type', 'garden'],
             ['soil', 'soil-test-change'],
             ['sunlight', 'direct'],
             ['plant_variety', 'tomato'],
@@ -335,7 +333,7 @@ describe('/api/plants/:plant_id', () => {
 
     test('status:404 - non-existent plant_id - responds with msg: "plant not found"', () => {
       return request(app)
-        .patch('/api/plants/7')
+        .patch('/api/plants/89')
         .expect(404)
         .send({
           plant_name: 'plant-name-test-change',
@@ -358,8 +356,6 @@ describe('/api/plants/:plant_id', () => {
           plant_type: 'vegetable',
           soil: 'soil-test-change',
           sunlight: false,
-          location: true,
-          watering_freq: 4,
         })
         .expect(400)
         .then(({ body: { msg } }) => {
@@ -375,7 +371,7 @@ describe('/api/plants/:plant_id', () => {
 
     test('status:404 - non-existent plant_id - responds with msg: "plant not found"', () => {
       return request(app)
-        .del('/api/plants/7')
+        .del('/api/plants/897')
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe('plant not found');
@@ -400,8 +396,19 @@ describe('/api/plants/:plant_id', () => {
         .get('/api/plants/1')
         .expect(200)
         .then(({ body: { plant } }) => {
-          expect(plant.plant_id).toBe(1);
-          expect(plant).toHaveProperty('soil');
+          expect(plant).toContainEntries([
+            ['plant_id', 1],
+            ['user_id', 1],
+            ['plant_name', 'plantName1'],
+            ['plant_type', 'vegetable'],
+            ['soil', 'soil1'],
+            ['sunlight', 'indirect'],
+            ['location', 'inside'],
+            ['watering_freq', 'twice a day'],
+            ['plant_variety', 'tomato'],
+            ['pot_height', '10.0'],
+            ['created_at', new Date(1416140514171).toISOString()],
+          ]);
         });
     });
 
@@ -422,13 +429,5 @@ describe('/api/plants/:plant_id', () => {
           expect(msg).toBe('bad request');
         });
     });
-  });
-  test('status:405 - invalid method - responds with msg: "method not allowed"', () => {
-    return request(app)
-      .post('/api/plants/1')
-      .expect(405)
-      .then(({ body: { msg } }) => {
-        expect(msg).toBe('method not allowed');
-      });
   });
 });

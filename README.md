@@ -2,12 +2,12 @@
 
 [Budding API](https://budding-back-end.herokuapp.com/api)
 
-An API to serve endpoints to the [Budding App](https://github.com/budding-team/budding-front-end)
+An API to serve endpoints to the [Budding App](https://github.com/thorners55/budding-front-end)
 
 ## Getting Started
 
 ```bash
-git clone https://github.com/budding-team/budding-back-end.git
+git clone https://github.com/thorners55/budding-front-end
 ```
 
 ### Prerequisites
@@ -26,13 +26,11 @@ npm install
 
 ### Database Setup
 
-Add a knexfile.js in the root directory
+Add a knexfile.js in the root directory and add the following code.
 
 - user and password should be your postgres credentials (not required for mac users)
 
 ```js
-// knexfile.js
-
 const ENV = process.env.NODE_ENV || 'development';
 const { DB_URL } = process.env;
 
@@ -49,14 +47,14 @@ const baseConfig = {
 const customConfig = {
   development: {
     connection: {
-      database: 'nc_news',
+      database: 'budding_app',
       // user,
       // password
     },
   },
   test: {
     connection: {
-      database: 'nc_news_test',
+      database: 'budding_app_test',
       // user,
       // password
     },
