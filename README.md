@@ -7,7 +7,7 @@ An API to serve endpoints to the [Budding App](https://github.com/thorners55/bud
 ## Getting Started
 
 ```bash
-git clone https://github.com/thorners55/budding-front-end
+git clone https://github.com/thorners55/budding-back-end
 ```
 
 ### Prerequisites
