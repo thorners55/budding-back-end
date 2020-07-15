@@ -7,6 +7,7 @@ const send405 = (req, res) => {
 };
 
 const handlePSQLErrors = (err, req, res, next) => {
+  console.log(err);
   const codes = {
     '22P02': { status: 400, msg: 'bad request' },
     '23503': { status: 400, msg: 'bad request' },
@@ -31,7 +32,6 @@ const handleCustomErrors = (err, req, res, next) => {
 };
 
 const handleInternalErrors = (err, req, res) => {
-  // eslint-disable-next-line no-console
   console.log('unhandled error:', err);
   res.status(500).send({ msg: 'internal server error' });
 };

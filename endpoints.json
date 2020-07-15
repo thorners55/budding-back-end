@@ -4,7 +4,7 @@
   },
   "GET /api/users": {
     "description": "serves an array of users",
-    "queries": [],
+    "queries": "none",
     "example response": {
       "users": [
         {
@@ -52,28 +52,28 @@
       "plants": [
         {
           "plant_id": 1,
-          "plant_name": "plant-name-1",
+          "plant_name": "Rosie",
           "user_id": 1,
-          "plant_type": "plant-type-1",
-          "plant_variety": "plant-variety-1",
+          "plant_type": "herb",
+          "plant_variety": "basil",
           "pot_height": "10.0",
-          "soil": "soil-1",
+          "soil": "",
           "sunlight": "indirect",
           "location": "outside",
-          "watering_freq": "twice a day",
+          "watering_freq": "once a day",
           "created_at": "2020-11-16T12:21:54.171Z"
         },
         {
           "plant_id": 2,
-          "plant_name": "plant-name-2",
+          "plant_name": "George W. Bush",
           "user_id": 2,
-          "plant_type": "plant-type-2",
-          "plant_variety": "plant-variety-2",
-          "pot_height": "20.0",
-          "soil": "soil-2",
-          "sunlight": "indirect",
+          "plant_type": "succulent",
+          "plant_variety": "snake plant",
+          "pot_height": "7.0",
+          "soil": "sand",
+          "sunlight": "direct",
           "location": "inside",
-          "watering_freq": "twice a day",
+          "watering_freq": "every two weeks",
           "created_at": "2020-11-16T12:21:54.171Z"
         }
       ]
@@ -114,15 +114,15 @@
     "example response": {
       "plant": {
         "plant_id": 1,
-        "plant_name": "plant-name-1",
+        "plant_name": "Rosie",
         "user_id": 1,
-        "plant_type": "plant-type-1",
-        "plant_variety": "plant-variety-1",
+        "plant_type": "herb",
+        "plant_variety": "basil",
         "pot_height": "10.0",
-        "soil": "soil-1",
+        "soil": "",
         "sunlight": "indirect",
         "location": "outside",
-        "watering_freq": "twice a day",
+        "watering_freq": "once a day",
         "created_at": "2020-11-16T12:21:54.171Z"
       }
     }
@@ -166,7 +166,7 @@
     "example response": {
       "snaps": [
         {
-          "snapshot_id": 1,
+          "snapshot_id": 26,
           "plant_id": 1,
           "plant_uri": "https://plant_uri_1.jpg",
           "height": "13.2",
