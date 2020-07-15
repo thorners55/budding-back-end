@@ -1,6 +1,11 @@
 const connection = require('../db/connection');
 
 const selectPlantsByUserId = (
+  // get plants
+  // if no plants - check user exists
+  // if user exists - user has 0 plants
+  // if user doesn't exist - bad request
+  // if plants - return them
   { user_id },
   { sort_by = 'created_at', order = 'desc', plant_type },
 ) => {
@@ -10,15 +15,6 @@ const selectPlantsByUserId = (
       msg: 'bad request',
     });
   }
-
-  // get plants
-  // if no plants-
-  //   check user exists
-  //   if user exists
-  //     user has 0 plants
-  //   if user doesn't exist
-  //     bad request
-  //  if plants - return them
 
   return connection
     .select('plants.*')
@@ -45,7 +41,7 @@ const selectPlantsByUserId = (
               });
             }
 
-            return []; // empty plants array
+            return [];
           });
       }
 

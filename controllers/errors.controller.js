@@ -32,7 +32,6 @@ const handleCustomErrors = (err, req, res, next) => {
 };
 
 const handleInternalErrors = (err, req, res) => {
-  // eslint-disable-next-line no-console
   console.log('unhandled error:', err);
   res.status(500).send({ msg: 'internal server error' });
 };
