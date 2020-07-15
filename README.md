@@ -1,6 +1,6 @@
 # Budding API
 
-[Budding API](https://budding-back-end.herokuapp.com/api)
+[Budding API](https://budding-app.herokuapp.com/api)
 
 An API to serve endpoints to the [Budding App](https://github.com/thorners55/budding-front-end)
 
