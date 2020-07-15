@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../app');
 const connection = require('../db/connection');
 
-//beforeEach(() => connection.seed.run());
+beforeEach(() => connection.seed.run());
 afterAll(() => connection.destroy());
 
 describe('/users', () => {
@@ -28,6 +28,7 @@ describe('/users', () => {
         .get('/api/users')
         .expect(200)
         .then(({ body: { users } }) => {
+          console.log(users);
           expect(Array.isArray(users)).toBe(true);
           expect(users.length).toBe(4);
           users.forEach((user) => {
@@ -39,24 +40,36 @@ describe('/users', () => {
   });
 
   describe('POST', () => {
-    test.only('status:201 responds with created user object', () => {
-      return request(app)
-        .post('/api/users')
-        .send({
-          username: 'unique-username',
-          name: 'full-name',
-        })
-        .expect(201)
-        .then(({ body }) => {
-          console.log(body);
-        });
-      // .then(({ body: { user } }) => {
-      //   expect(user).toEqual({
-      //     user_id: 5,
-      //     username: 'unique-username',
-      //     name: 'full name',
-      //   });
-      // });
+    test('status:201 responds with created user object', () => {
+      // connection is seeded before each test function, so PSQL tries to start the primary key of user id on 1, and throws error because 1 has already been used. On each loop, increments the sequence count in users_user_id_seq table by one. By looping and making a request four times, can get to number 5 in the sequence, which will not throw a "duplicate primary key" error because there are only four users in the test data.
+      let count;
+      for (let i = 0; i < 5; i++) {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 'unique-username',
+            name: 'full-name',
+          })
+          .then(() => {
+            count++;
+          });
+      }
+      if (count >= 5) {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 'unique-username',
+            name: 'full-name',
+          })
+          .expect(201)
+          .then(({ body: { user } }) => {
+            expect(user).toEqual({
+              user_id: 5,
+              username: 'unique-username',
+              name: 'full name',
+            });
+          });
+      } else return;
     });
 
     test('status:400 - invalid body, missing username key - responds with msg: "bad request"', () => {
