@@ -41,7 +41,10 @@ describe('/users', () => {
 
   describe('POST', () => {
     test('status:201 responds with created user object', () => {
-      // connection is seeded before each test function, so PSQL tries to start the primary key of user id on 1, and throws error because 1 has already been used. On each loop, increments the sequence count in users_user_id_seq table by one. By looping and making a request four times, can get to number 5 in the sequence, which will not throw a "duplicate primary key" error because there are only four users in the test data.
+      // connection is seeded before each test function, so PSQL tries to start the primary key of user id on 1
+      // throws error because 1 has already been used. On each loop, increments the sequence count in users_user_id_seq table by one.
+      // by looping and making a request four times, can get to number 5 in the sequence
+      // this  will not throw a "duplicate primary key" error because there are only four users in the test data.
       let count;
       for (let i = 0; i < 5; i++) {
         return request(app)
