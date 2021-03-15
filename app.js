@@ -9,7 +9,6 @@ const {
 } = require('./controllers/errors.controller');
 
 const app = express();
-console.log(process.env.NODE_ENV);
 
 app.use(cors());
 app.use(express.json());
